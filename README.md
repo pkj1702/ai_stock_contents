@@ -53,8 +53,45 @@ stock_analysis_video/
 ## ⚙️ 설치 및 설정
 
 ### 1. 환경 설정
+
+#### 1.1 Conda 가상환경 생성
+```bash
+conda create -n smolagents python=3.10
+conda activate smolagents
+```
+
+#### 1.2 Python 패키지 설치
 ```bash
 pip install -r requirements.txt
+```
+
+#### 1.3 FFmpeg 설치
+FFmpeg는 동영상 처리를 위해 별도로 설치해야 합니다.
+
+**Windows:**
+```bash
+# Chocolatey 사용 (권장)
+choco install ffmpeg
+
+# 또는 수동 다운로드
+# https://ffmpeg.org/download.html 에서 다운로드 후 PATH 추가
+```
+
+**macOS:**
+```bash
+# Homebrew 사용
+brew install ffmpeg
+```
+
+**Linux (Ubuntu/Debian):**
+```bash
+sudo apt update
+sudo apt install ffmpeg
+```
+
+설치 확인:
+```bash
+ffmpeg -version
 ```
 
 ### 2. API 키 설정 (.env 파일)
