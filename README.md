@@ -119,7 +119,7 @@ python stock_analysis_video.py "삼성전자 주식 분석해"
 ### 주식 분석 팟캐스트 생성
 ```bash
 # 3분 팟캐스트 (기본)
-python stock_podcast.py "애플 주식에 대해 분석하고 투자 의견도 말해줘"
+python stock_podcast.py "애플 주식에 대해 분석하고 투자 의견도 말해"
 
 # 10분 팟캐스트
 python stock_podcast.py "테슬라 주식에 대해 분석해" --podcast-length 2
