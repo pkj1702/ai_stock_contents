@@ -1,242 +1,162 @@
-<!---
-Copyright 2024 The HuggingFace Team. All rights reserved.
+# AI 주식 분석 콘텐츠 생성 시스템
 
-Licensed under the Apache License, Version 2.0 (the "License");
-you may not use this file except in compliance with the License.
-You may obtain a copy of the License at
+AI 멀티 에이전트를 활용하여 주식을 분석하고 팟캐스트 및 분석 동영상을 자동 생성하는 시스템입니다.
 
-    http://www.apache.org/licenses/LICENSE-2.0
+## 🎯 시스템 개요
 
-Unless required by applicable law or agreed to in writing, software
-distributed under the License is distributed on an "AS IS" BASIS,
-WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-See the License for the specific language governing permissions and
-limitations under the License.
--->
-<p align="center">
-    <!-- Uncomment when CircleCI is set up
-    <a href="https://circleci.com/gh/huggingface/accelerate"><img alt="Build" src="https://img.shields.io/circleci/build/github/huggingface/transformers/master"></a>
-    -->
-    <a href="https://github.com/huggingface/smolagents/blob/main/LICENSE"><img alt="License" src="https://img.shields.io/github/license/huggingface/smolagents.svg?color=blue"></a>
-    <a href="https://huggingface.co/docs/smolagents"><img alt="Documentation" src="https://img.shields.io/website/http/huggingface.co/docs/smolagents/index.html.svg?down_color=red&down_message=offline&up_message=online"></a>
-    <a href="https://github.com/huggingface/smolagents/releases"><img alt="GitHub release" src="https://img.shields.io/github/release/huggingface/smolagents.svg"></a>
-    <a href="https://github.com/huggingface/smolagents/blob/main/CODE_OF_CONDUCT.md"><img alt="Contributor Covenant" src="https://img.shields.io/badge/Contributor%20Covenant-v2.0%20adopted-ff69b4.svg"></a>
-</p>
+본 시스템은 두 가지 주요 모듈로 구성되어 있습니다:
 
-<h3 align="center">
-  <div style="display:flex;flex-direction:row;">
-    <img src="https://huggingface.co/datasets/huggingface/documentation-images/resolve/main/smolagents/smolagents.png" alt="Hugging Face mascot as James Bond" width=400px>
-    <p>A smol library to build great agents!</p>
-  </div>
-</h3>
+### 📊 주식 분석 동영상 생성 (`stock_analysis_video.py`)
+- **단기/중기 분석**: 시간봉/일봉 차트를 활용한 트레이딩 및 투자 관점 분석
+- **차트 시각화**: 기술적 분석 내용에 맞는 차트 이미지 자동 생성
+- **동영상 제작**: AI 음성과 차트 이미지를 결합한 자막 포함 분석 동영상
 
-`smolagents` is a library that enables you to run powerful agents in a few lines of code. It offers:
+### 🎙️ 주식 분석 팟캐스트 생성 (`stock_podcast.py`)
+- **종합 분석**: 5개 전문 영역의 멀티 에이전트 협업
+- **팟캐스트 제작**: 두 명의 진행자가 대화하는 형식의 오디오 콘텐츠
+- **다양한 길이**: 3분/10분 버전 선택 가능
 
-✨ **Simplicity**: the logic for agents fits in ~1,000 lines of code (see [agents.py](https://github.com/huggingface/smolagents/blob/main/src/smolagents/agents.py)). We kept abstractions to their minimal shape above raw code!
+## 🚀 주요 기능
 
-🧑‍💻 **First-class support for Code Agents**. Our [`CodeAgent`](https://huggingface.co/docs/smolagents/reference/agents#smolagents.CodeAgent) writes its actions in code (as opposed to "agents being used to write code"). To make it secure, we support executing in sandboxed environments via [E2B](https://e2b.dev/) or via Docker.
+### 동영상 생성 시스템
+- ✅ **멀티 타임프레임 분석**: 단기(시간봉) + 중기(일봉) 분석
+- ✅ **자동 차트 마킹**: 분석 내용에 따른 기술적 지표 표시
+- ✅ **AI 음성 합성**: OpenAI TTS를 활용한 자연스러운 음성
+- ✅ **자막 생성**: 한글 자막이 포함된 분석 동영상
+- ✅ **FFmpeg 통합**: 고품질 비디오 및 자막 처리
 
-🤗 **Hub integrations**: you can [share/pull tools to/from the Hub](https://huggingface.co/docs/smolagents/reference/tools#smolagents.Tool.from_hub), and more is to come!
+### 팟캐스트 생성 시스템
+- ✅ **5개 전문 에이전트**: 기술적 분석, 뉴스, 글로벌 경제, 섹터, 투자심리
+- ✅ **캐릭터 기반 대화**: 차별화된 두 명의 진행자 페르소나
+- ✅ **3단계 스크립트 개선**: 초안 → 10분 버전 → 3분 버전
+- ✅ **멀티보이스**: 남성/여성 목소리 교대로 자연스러운 대화
+- ✅ **실시간 웹 검색**: 최신 주식 정보 및 뉴스 반영
 
-🌐 **Model-agnostic**: smolagents supports any LLM. It can be a local `transformers` or `ollama` model, one of [many providers on the Hub](https://huggingface.co/blog/inference-providers), or any model from OpenAI, Anthropic and many others via our [LiteLLM](https://www.litellm.ai/) integration.
+## 📁 파일 구조
 
-👁️ **Modality-agnostic**: Agents support text, vision, video, even audio inputs! Cf [this tutorial](https://huggingface.co/docs/smolagents/examples/web_browser) for vision.
+```
+stock_analysis_video/
+├── examples/open_deep_research/
+│   ├── stock_analysis_video.py    # 동영상 생성 메인 시스템
+│   ├── stock_podcast.py           # 팟캐스트 생성 메인 시스템
+│   ├── scripts/                   # 전문 도구 및 에이전트
+│   │   ├── stock_analysis_short.py    # 단기 분석 도구
+│   │   ├── stock_analysis_mid.py      # 중기 분석 도구
+│   │   ├── stock_visualization_tool.py # 차트 시각화 도구
+│   │   ├── sentiment_tool.py          # 감정 분석 도구
+│   │   └── text_web_browser.py        # 웹 브라우저 도구
+│   └── prompts/                   # AI 프롬프트 템플릿
+│       ├── stockvideo_prompts.py      # 동영상용 프롬프트
+│       └── podcast_prompts.py         # 팟캐스트용 프롬프트
+```
 
-🛠️ **Tool-agnostic**: you can use tools from [LangChain](https://huggingface.co/docs/smolagents/reference/tools#smolagents.Tool.from_langchain), [Anthropic's MCP](https://huggingface.co/docs/smolagents/reference/tools#smolagents.ToolCollection.from_mcp), you can even use a [Hub Space](https://huggingface.co/docs/smolagents/reference/tools#smolagents.Tool.from_space) as a tool.
+## ⚙️ 설치 및 설정
 
-Full documentation can be found [here](https://huggingface.co/docs/smolagents/index).
-
-> [!NOTE]
-> Check the our [launch blog post](https://huggingface.co/blog/smolagents) to learn more about `smolagents`!
-
-## Quick demo
-
-First install the package.
+### 1. 환경 설정
 ```bash
-pip install smolagents
-```
-Then define your agent, give it the tools it needs and run it!
-```py
-from smolagents import CodeAgent, DuckDuckGoSearchTool, HfApiModel
-
-model = HfApiModel()
-agent = CodeAgent(tools=[DuckDuckGoSearchTool()], model=model)
-
-agent.run("How many seconds would it take for a leopard at full speed to run through Pont des Arts?")
+pip install -r requirements.txt
 ```
 
-https://github.com/user-attachments/assets/cd0226e2-7479-4102-aea0-57c22ca47884
-
-You can even share your agent to hub:
-```py
-agent.push_to_hub("m-ric/my_agent")
-
-# agent.from_hub("m-ric/my_agent") to load an agent from Hub
+### 2. API 키 설정 (.env 파일)
+```env
+ANTHROPIC_API_KEY=your_anthropic_key
+OPENAI_API_KEY=your_openai_key
+HF_TOKEN=your_huggingface_token
+SERPAPI_API_KEY=your_serpapi_key
 ```
 
-Our library is LLM-agnostic: you could switch the example above to any inference provider.
+### 3. 시스템 요구사항
+- Python 3.8+
+- FFmpeg (동영상 자막 처리용)
+- 충분한 디스크 공간 (임시 파일 생성)
 
-<details>
-<summary> <b>HfApiModel, gateway for 4 inference providers</b></summary>
+## 🎮 사용법
 
-```py
-from smolagents import HfApiModel
-
-model = HfApiModel(
-    model_id="deepseek-ai/DeepSeek-R1",
-    provider="together",
-)
-```
-</details>
-<details>
-<summary> <b>LiteLLM to access 100+ LLMs</b></summary>
-
-```py
-from smolagents import LiteLLMModel
-
-model = LiteLLMModel(
-    "anthropic/claude-3-5-sonnet-latest",
-    temperature=0.2,
-    api_key=os.environ["ANTHROPIC_API_KEY"]
-)
-```
-</details>
-<details>
-<summary> <b>OpenAI-compatible servers</b></summary>
-
-```py
-import os
-from smolagents import OpenAIServerModel
-
-model = OpenAIServerModel(
-    model_id="deepseek-ai/DeepSeek-R1",
-    api_base="https://api.together.xyz/v1/", # Leave this blank to query OpenAI servers.
-    api_key=os.environ["TOGETHER_API_KEY"], # Switch to the API key for the server you're targeting.
-)
-```
-</details>
-<details>
-<summary> <b>Local `transformers` model</b></summary>
-
-```py
-from smolagents import TransformersModel
-
-model = TransformersModel(
-    model_id="Qwen/Qwen2.5-Coder-32B-Instruct",
-    max_new_tokens=4096,
-    device_map="auto"
-)
-```
-</details>
-<details>
-<summary> <b>Azure models</b></summary>
-
-```py
-import os
-from smolagents import AzureOpenAIServerModel
-
-model = AzureOpenAIServerModel(
-    model_id = os.environ.get("AZURE_OPENAI_MODEL"),
-    azure_endpoint=os.environ.get("AZURE_OPENAI_ENDPOINT"),
-    api_key=os.environ.get("AZURE_OPENAI_API_KEY"),
-    api_version=os.environ.get("OPENAI_API_VERSION")    
-)
-```
-</details>
-
-## CLI
-
-You can run agents from CLI using two commands: `smolagent` and `webagent`.
-
-`smolagent` is a generalist command to run a multi-step `CodeAgent` that can be equipped with various tools.
-
+### 주식 분석 동영상 생성
 ```bash
-smolagent "Plan a trip to Tokyo, Kyoto and Osaka between Mar 28 and Apr 7."  --model-type "HfApiModel" --model-id "Qwen/Qwen2.5-Coder-32B-Instruct" --imports "pandas numpy" --tools "web_search"
+python stock_analysis_video.py "삼성전자 주식 분석해"
 ```
 
-Meanwhile `webagent` is a specific web-browsing agent using [helium](https://github.com/mherrmann/helium) (read more [here](https://github.com/huggingface/smolagents/blob/main/src/smolagents/vision_web_browser.py)).
+**출력**: `investment_analysis_video.mp4` (자막 포함 분석 동영상)
 
-For instance:
+### 주식 분석 팟캐스트 생성
 ```bash
-webagent "go to xyz.com/men, get to sale section, click the first clothing item you see. Get the product details, and the price, return them. note that I'm shopping from France" --model-type "LiteLLMModel" --model-id "gpt-4o"
+# 3분 팟캐스트 (기본)
+python stock_podcast.py "애플 주식에 대해 분석하고 투자 의견도 말해줘"
+
+# 10분 팟캐스트
+python stock_podcast.py "테슬라 주식에 대해 분석해" --podcast-length 2
 ```
 
-## How do Code agents work?
+**출력**: `podcast_final.mp3` (두 진행자 대화형 오디오)
 
-Our [`CodeAgent`](https://huggingface.co/docs/smolagents/reference/agents#smolagents.CodeAgent) works mostly like classical ReAct agents - the exception being that the LLM engine writes its actions as Python code snippets.
+## 🤖 에이전트 구조
+
+### 동영상 시스템 에이전트
 
 ```mermaid
-flowchart TB
-    Task[User Task]
-    Memory[agent.memory]
-    Generate[Generate from agent.model]
-    Execute[Execute Code action - Tool calls are written as functions]
-    Answer[Return the argument given to 'final_answer']
-
-    Task -->|Add task to agent.memory| Memory
-
-    subgraph ReAct[ReAct loop]
-        Memory -->|Memory as chat messages| Generate
-        Generate -->|Parse output to extract code action| Execute
-        Execute -->|No call to 'final_answer' tool => Store execution logs in memory and keep running| Memory
-    end
-    
-    Execute -->|Call to 'final_answer' tool| Answer
-
-    %% Styling
-    classDef default fill:#d4b702,stroke:#8b7701,color:#ffffff
-    classDef io fill:#4a5568,stroke:#2d3748,color:#ffffff
-    
-    class Task,Answer io
+graph TD
+    A[매니저 에이전트] --> B[단기 분석 에이전트]
+    A --> C[중기 분석 에이전트]
+    B --> D[시간봉 차트 마킹]
+    C --> E[일봉 차트 마킹]
+    F[스크립트 변환 에이전트] --> G[최종 동영상]
 ```
 
-Actions are now Python code snippets. Hence, tool calls will be performed as Python function calls. For instance, here is how the agent can perform web search over several websites in one single action:
-```py
-requests_to_search = ["gulf of mexico america", "greenland denmark", "tariffs"]
-for request in requests_to_search:
-    print(f"Here are the search results for {request}:", web_search(request))
+- **매니저 에이전트**: 단기/중기 분석 조율
+- **단기 분석 에이전트**: 시간봉 기반 트레이딩 분석
+- **중기 분석 에이전트**: 일봉 기반 투자 분석
+- **차트 마킹 에이전트**: 분석 내용 시각화
+- **스크립트 변환 에이전트**: 음성용 텍스트 최적화
+
+### 팟캐스트 시스템 에이전트
+
+```mermaid
+graph TD
+    A[매니저 에이전트] --> B[기술적 분석 에이전트]
+    A --> C[뉴스 분석 에이전트]
+    A --> D[글로벌 경제 에이전트]
+    A --> E[섹터 분석 에이전트]
+    A --> F[투자심리 에이전트]
+    G[팟캐스트 에이전트] --> H[페르소나 에이전트]
+    G --> I[계획 에이전트]
+    G --> J[대본 생성 에이전트]
 ```
 
-Writing actions as code snippets is demonstrated to work better than the current industry practice of letting the LLM output a dictionary of the tools it wants to call: [uses 30% fewer steps](https://huggingface.co/papers/2402.01030) (thus 30% fewer LLM calls) and [reaches higher performance on difficult benchmarks](https://huggingface.co/papers/2411.01747). Head to [our high-level intro to agents](https://huggingface.co/docs/smolagents/conceptual_guides/intro_agents) to learn more on that.
+- **5개 전문 분석 에이전트**: 각 영역별 심층 분석
+- **페르소나 에이전트**: 진행자 캐릭터 설정
+- **계획 에이전트**: 팟캐스트 구성 설계
+- **대본 생성 에이전트**: 최종 스크립트 제작
 
-Especially, since code execution can be a security concern (arbitrary code execution!), we provide options at runtime:
-  - a secure python interpreter to run code more safely in your environment (more secure than raw code execution but still risky)
-  - a sandboxed environment using [E2B](https://e2b.dev/) or Docker (removes the risk to your own system).
+## 📤 출력 파일
 
-On top of this [`CodeAgent`](https://huggingface.co/docs/smolagents/reference/agents#smolagents.CodeAgent) class, we still support the standard [`ToolCallingAgent`](https://huggingface.co/docs/smolagents/reference/agents#smolagents.ToolCallingAgent) that writes actions as JSON/text blobs. But we recommend always using `CodeAgent`.
+### 동영상 시스템
+- `investment_analysis_video.mp4`: 최종 분석 동영상
+- `investment_report.txt`: 텍스트 분석 리포트
 
-## How smol is this library?
+### 팟캐스트 시스템
+- `podcast_final.mp3`: 최종 팟캐스트 오디오
+- `investment_report.txt`: 분석 리포트
 
-We strived to keep abstractions to a strict minimum: the main code in `agents.py` has <1,000 lines of code.
-Still, we implement several types of agents: `CodeAgent` writes its actions as Python code snippets, and the more classic `ToolCallingAgent` leverages built-in tool calling methods. We also have multi-agent hierarchies, import from tool collections, remote code execution, vision models...
+## 🔧 커스터마이징
 
-By the way, why use a framework at all? Well, because a big part of this stuff is non-trivial. For instance, the code agent has to keep a consistent format for code throughout its system prompt, its parser, the execution. So our framework handles this complexity for you. But of course we still encourage you to hack into the source code and use only the bits that you need, to the exclusion of everything else!
-
-## How strong are open models for agentic workflows?
-
-We've created [`CodeAgent`](https://huggingface.co/docs/smolagents/reference/agents#smolagents.CodeAgent) instances with some leading models, and compared them on [this benchmark](https://huggingface.co/datasets/m-ric/agents_medium_benchmark_2) that gathers questions from a few different benchmarks to propose a varied blend of challenges.
-
-[Find the benchmarking code here](https://github.com/huggingface/smolagents/blob/main/examples/benchmark.ipynb) for more detail on the agentic setup used, and see a comparison of using LLMs code agents compared to vanilla (spoilers: code agents works better).
-
-<p align="center">
-    <img src="https://huggingface.co/datasets/huggingface/documentation-images/resolve/main/smolagents/benchmark_code_agents.jpeg" alt="benchmark of different models on agentic workflows. Open model DeepSeek-R1 beats closed-source models." width=60% max-width=500px>
-</p>
-
-This comparison shows that open-source models can now take on the best closed models!
-
-## Contribute
-
-Everyone is welcome to contribute, get started with our [contribution guide](https://github.com/huggingface/smolagents/blob/main/CONTRIBUTING.md).
-
-## Cite smolagents
-
-If you use `smolagents` in your publication, please cite it by using the following BibTeX entry.
-
-```bibtex
-@Misc{smolagents,
-  title =        {`smolagents`: a smol library to build great agentic systems.},
-  author =       {Aymeric Roucher and Albert Villanova del Moral and Thomas Wolf and Leandro von Werra and Erik Kaunismäki},
-  howpublished = {\url{https://github.com/huggingface/smolagents}},
-  year =         {2025}
-}
+### 분석 주기 변경
+```python
+# stock_analysis_short.py에서 시간봉 주기 조정
+period = "1d"  # 1일 → 5일로 변경 가능
+interval = "1h"  # 1시간 → 30분으로 변경 가능
 ```
+
+### 음성 설정 변경
+```python
+# 팟캐스트 음성 변경
+voices = ["nova", "onyx"]  # alloy, echo, fable, shimmer 등으로 변경 가능
+```
+
+### 에이전트 단계 수 조정
+```python
+max_steps = 10  # 더 상세한 분석을 위해 증가 가능
+```
+
+---
+*AI 기반 주식 분석 콘텐츠 자동 생성 시스템 v1.0*
